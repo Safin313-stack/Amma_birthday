@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Ma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     EDIT THESE TO PERSONALIZE — everything else updates itself
+     ============================================================ */
+  :root{
+    --mom-name: "Amma";
+    --gold: #c9973e;
+    --gold-light: #e9c888;
+    --gold-deep: #8b6914;
+    --cream: #fbf3e4;
+    --ivory: #fff9ef;
+    --espresso: #3a2618;
+    --burgundy: #8a3324;
+    --blush: #ecd2ac;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--espresso);
+    font-family:'Cormorant Garamond', serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--gold-light); color:var(--espresso);}
+
+  h1,h2,.script{font-family:'Playfair Display', serif;}
+  .script-font{font-family:'Great Vibes', cursive; font-weight:400;}
+
+  /* ---------- ambient gold particles ---------- */
+  #particles{
+    position:fixed; inset:0; pointer-events:none; z-index:3; overflow:hidden;
+  }
+  .particle{
+    position:absolute; bottom:-10px;
+    width:5px; height:5px; border-radius:50%;
+    background:radial-gradient(circle, var(--gold-light), transparent 70%);
+    opacity:.7;
+    animation:rise linear infinite;
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0); opacity:0;}
+    10%{opacity:.8;}
+    90%{opacity:.5;}
+    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0;}
+  }
+
+  section{
+    position:relative; z-index:2;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:6rem 1.5rem;
+    text-align:center;
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    background:
+      radial-gradient(circle at 50% 20%, rgba(233,200,136,.35), transparent 55%),
+      linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  }
+  .eyebrow{
+    letter-spacing:.35em; text-transform:uppercase;
+    font-size:.75rem; color:#6e4f14; font-family:'Cormorant Garamond',serif;
+    font-weight:700; margin-bottom:1.2rem;
+    opacity:0; animation:fadeUp 1s ease forwards .2s;
+  }
+  .hero-script{
+    font-size:clamp(3rem, 9vw, 6rem);
+    color:var(--gold);
+    line-height:1;
+    opacity:0; animation:fadeUp 1.2s ease forwards .5s;
+    text-shadow:0 2px 20px rgba(201,151,62,.25);
+  }
+  .hero-name{
+    font-size:clamp(2.5rem, 8vw, 5rem);
+    font-weight:700; margin-top:.3rem;
+    background:linear-gradient(120deg, var(--gold-deep), var(--gold), var(--gold-light), var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:300% auto;
+    opacity:0; animation:fadeUp 1.2s ease forwards .9s, shine 6s linear infinite 2s;
+  }
+  @supports not ((-webkit-background-clip:text) or (background-clip:text)){
+    .hero-name{ color:var(--gold-deep); background:none; }
+  }
+  @keyframes shine{ to{ background-position:300% center; } }
+  .hero-sub{
+    margin-top:1.5rem; font-size:1.15rem; color:#6b5233; max-width:34ch;
+    opacity:0; animation:fadeUp 1.2s ease forwards 1.3s;
+  }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:translateY(0);} }
+
+  .scroll-cue{
+    margin-top:3.5rem; font-size:.75rem; letter-spacing:.25em; text-transform:uppercase;
+    color:#6e4f14; font-weight:600; opacity:0; animation:fadeUp 1s ease forwards 1.8s, bob 2.2s ease-in-out infinite 2.8s;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+  /* divider */
+  .divider{ display:flex; align-items:center; gap:1rem; width:100%; max-width:220px; margin:0 auto 2rem; }
+  .divider span{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .divider svg{ flex-shrink:0; }
+
+  /* ================= LETTER / SPEECH ================= */
+  .letter-wrap{
+    max-width:640px; width:100%;
+  }
+  .letter{
+    background:var(--ivory);
+    border:1px solid var(--blush);
+    border-radius:4px;
+    padding:clamp(2rem,6vw,4rem);
+    position:relative;
+    box-shadow:0 30px 60px -25px rgba(58,38,24,.25);
+    opacity:0; transform:translateY(40px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .letter.in-view{ opacity:1; transform:translateY(0); }
+  .letter::before{
+    content:'';
+    position:absolute; inset:10px;
+    border:1px solid var(--gold-light);
+    border-radius:2px; pointer-events:none;
+  }
+  .seal{
+    width:56px; height:56px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold-deep) 75%);
+    margin:0 auto 1.5rem;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 14px rgba(139,105,20,.4);
+    font-family:'Great Vibes', cursive; color:var(--ivory); font-size:1.6rem;
+  }
+  .letter h2{ font-size:1.9rem; color:var(--gold-deep); margin-bottom:1.4rem; }
+  .letter p{ font-size:1.2rem; line-height:1.85; color:#4a3520; margin-bottom:1.1rem; text-align:left; }
+  .letter p:first-of-type::first-letter{
+    font-family:'Playfair Display', serif; font-size:3.4rem; float:left; line-height:.8;
+    padding:.1rem .12em 0 0; color:var(--gold);
+  }
+  .signature{
+    margin-top:2rem; text-align:right;
+    font-family:'Great Vibes', cursive; font-size:2.1rem; color:var(--gold-deep);
+  }
+
+  /* ================= CANDLE / MAKE A WISH ================= */
+  .wish-section{ background:linear-gradient(180deg, var(--cream), var(--ivory)); }
+  .cake{
+    position:relative; width:220px; height:170px; margin:0 auto 2.5rem;
+  }
+  .plate{
+    position:absolute; bottom:-14px; left:50%; transform:translateX(-50%);
+    width:250px; height:16px; border-radius:50%;
+    background:radial-gradient(ellipse at center, var(--gold-light), var(--gold) 70%);
+    box-shadow:0 8px 18px rgba(139,105,20,.35);
+  }
+  .tier{
+    position:absolute; left:50%; transform:translateX(-50%);
+    border-radius:10px 10px 4px 4px;
+    background:linear-gradient(180deg, var(--ivory), var(--blush));
+    border:1px solid var(--gold-light);
+  }
+  .tier1{ width:220px; height:70px; bottom:0; }
+  .tier2{ width:150px; height:60px; bottom:62px; }
+  .drip{
+    position:absolute; top:-10px; left:0; width:100%; height:20px;
+    background:
+      radial-gradient(circle 9px at 10px 0, var(--gold-light) 98%, transparent 100%),
+      radial-gradient(circle 9px at 45px 0, var(--gold-light) 98%, transparent 100%),
+      radial-gradient(circle 9px at 80px 0, var(--gold-light) 98%, transparent 100%),
+      radial-gradient(circle 9px at 115px 0, var(--gold-light) 98%, transparent 100%),
+      radial-gradient(circle 9px at 150px 0, var(--gold-light) 98%, transparent 100%);
+  }
+  .candle{
+    position:absolute; bottom:120px; width:8px; height:34px;
+    background:repeating-linear-gradient(180deg, var(--burgundy), var(--burgundy) 6px, var(--gold-light) 6px, var(--gold-light) 8px);
+    border-radius:2px;
+  }
+  .candle.c1{ left:60px; } .candle.c2{ left:106px; height:40px; bottom:126px; } .candle.c3{ left:152px; }
+  .flame{
+    position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+    width:10px; height:16px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%, #fff2c4, #ffb347 55%, var(--burgundy) 100%);
+    box-shadow:0 0 12px 3px rgba(255,179,71,.7);
+    animation:flicker 1.6s ease-in-out infinite;
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  @keyframes flicker{
+    0%,100%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
+    50%{ transform:translateX(-50%) scale(1.08) rotate(2deg); }
+  }
+  .flame.out{ opacity:0; transform:translateX(-50%) scale(.2); }
+  .smoke{
+    position:absolute; top:-20px; left:50%; width:3px; height:0px;
+    background:linear-gradient(180deg, rgba(150,150,150,.5), transparent);
+    opacity:0;
+  }
+  .smoke.show{ animation:smokeUp 1.6s ease-out forwards; }
+  @keyframes smokeUp{ 0%{height:0; opacity:.6; transform:translateX(-50%) translateY(0);} 100%{height:40px; opacity:0; transform:translateX(-50%) translateY(-30px) rotate(8deg);} }
+
+  .wish-btn{
+    font-family:'Cormorant Garamond', serif; font-weight:600; letter-spacing:.08em;
+    text-transform:uppercase; font-size:.9rem;
+    background:linear-gradient(120deg, var(--gold-deep), var(--gold));
+    color:var(--ivory); border:none; padding:1rem 2.4rem; border-radius:40px;
+    cursor:pointer; box-shadow:0 10px 24px -8px rgba(139,105,20,.55);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .wish-btn:hover{ transform:translateY(-3px); box-shadow:0 14px 30px -8px rgba(139,105,20,.65); }
+  .wish-btn:disabled{ opacity:.6; cursor:default; transform:none; }
+  .wish-msg{
+    margin-top:1.4rem; color:var(--gold-deep); min-height:1.6em;
+    font-family:'Great Vibes', cursive; font-size:1.8rem; opacity:0; transition:opacity .6s ease;
+  }
+  .wish-msg.show{ opacity:1; }
+
+  canvas#confetti{ position:fixed; inset:0; pointer-events:none; z-index:50; }
+
+  /* ================= WISHES WALL ================= */
+  .wishes-section{ background:var(--ivory); }
+  .wall-inner{ width:100%; max-width:900px; }
+  .wall-form{
+    display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center; margin:2rem 0 3rem;
+  }
+  .wall-form input, .wall-form textarea{
+    font-family:'Cormorant Garamond', serif; font-size:1.05rem;
+    border:1px solid var(--blush); background:var(--cream);
+    border-radius:8px; padding:.75rem 1rem; color:var(--espresso);
+  }
+  .wall-form input{ width:220px; }
+  .wall-form textarea{ width:100%; max-width:480px; min-height:70px; resize:vertical; }
+  .wall-form input:focus, .wall-form textarea:focus{ outline:2px solid var(--gold); outline-offset:1px; }
+  .wall-form button{
+    align-self:flex-end;
+    font-family:'Cormorant Garamond', serif; font-weight:600;
+    background:var(--gold); color:var(--ivory); border:none;
+    padding:.8rem 1.8rem; border-radius:8px; cursor:pointer; letter-spacing:.03em;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .wall-form button:hover{ background:var(--gold-deep); transform:translateY(-2px); }
+
+  .wall-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+    gap:1.4rem;
+  }
+  .wish-card{
+    background:var(--cream); border:1px solid var(--blush); border-radius:10px;
+    padding:1.4rem 1.3rem; text-align:left; position:relative;
+    box-shadow:0 14px 30px -18px rgba(58,38,24,.35);
+    opacity:0; transform:translateY(18px) rotate(var(--r,0deg));
+    animation:cardIn .6s ease forwards;
+  }
+  @keyframes cardIn{ to{ opacity:1; transform:translateY(0) rotate(var(--r,0deg)); } }
+  .wish-card::before{
+    content:'❝'; position:absolute; top:8px; right:14px; font-size:1.6rem; color:var(--gold-light);
+    font-family:'Playfair Display', serif;
+  }
+  .wish-card p{ font-size:1.08rem; line-height:1.6; margin-bottom:.7rem; }
+  .wish-card .from{ font-family:'Great Vibes', cursive; color:var(--gold-deep); font-size:1.25rem; }
+
+  /* ================= FOOTER ================= */
+  footer{
+    min-height:60vh; background:linear-gradient(180deg, var(--ivory), var(--gold-deep) 140%);
+  }
+  footer h2{ font-size:clamp(1.8rem,5vw,2.8rem); color:var(--espresso); margin-bottom:1rem; }
+  footer p{ max-width:38ch; color:#6b5233; font-size:1.15rem; }
+  .heart{
+    margin-top:2rem; font-size:1.6rem; color:var(--burgundy);
+    animation:beat 1.6s ease-in-out infinite;
+  }
+  @keyframes beat{ 0%,100%{transform:scale(1);} 25%{transform:scale(1.18);} 40%{transform:scale(1);} }
+
+  .wish-btn:focus-visible,
+  .wall-form button:focus-visible{
+    outline:3px solid var(--burgundy); outline-offset:3px;
+  }
+  .wall-form input:focus-visible, .wall-form textarea:focus-visible{
+    outline:2px solid var(--gold-deep); outline-offset:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+
+  @media (max-width:480px){
+    .wall-form input{ width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+<canvas id="confetti"></canvas>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="eyebrow">A little something, made with love</div>
+  <div class="hero-script script-font">Happy Birthday</div>
+  <h1 class="hero-name" id="momName">Amma</h1>
+  <p class="hero-sub">Every year with you is a gift. Today, it's your turn to be celebrated.</p>
+  <div class="scroll-cue">Scroll down ↓</div>
+</section>
+
+<!-- ============ LETTER ============ -->
+<section class="letter-section">
+  <div class="letter-wrap">
+    <div class="divider">
+      <span></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 7H22l-6 5 2.5 8-6.5-5-6.5 5 2.5-8-6-5h7.5z" fill="#c9973e"/></svg>
+      <span></span>
+    </div>
+    <div class="letter" id="letter">
+      <div class="seal">✦</div>
+      <h2>For the woman who gave me everything</h2>
+      <p>Some people search their whole lives for the kind of love you give without ever being asked. I found it the moment I was born — in you.</p>
+      <p>Thank you for every sacrifice I never saw, every worry you carried quietly, and every time you put us before yourself. You built a home out of patience and love, and I've been lucky enough to grow up inside it.</p>
+      <p>Today isn't really about candles or cake. It's a small pause to say — I see you. I see everything you've done, and I'm endlessly grateful to be your child.</p>
+      <p>Here's to you, today and always. I love you more than these words could ever hold.</p>
+      <div class="signature">Your loving child</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAKE A WISH ============ -->
+<section class="wish-section">
+  <div class="eyebrow">The Wish</div>
+  <h2 style="font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:2.4rem;">Blow out the candles &amp; make a wish</h2>
+  <div class="cake">
+    <div class="tier tier2">
+      <div class="drip"></div>
+      <div class="candle c1"><div class="smoke" data-smoke></div><div class="flame" data-flame></div></div>
+      <div class="candle c2"><div class="smoke" data-smoke></div><div class="flame" data-flame></div></div>
+      <div class="candle c3"><div class="smoke" data-smoke></div><div class="flame" data-flame></div></div>
+    </div>
+    <div class="tier tier1"><div class="drip"></div></div>
+    <div class="plate"></div>
+  </div>
+  <button class="wish-btn" id="blowBtn">Click to blow out the candles</button>
+  <div class="wish-msg" id="wishMsg"></div>
+</section>
+
+<!-- ============ WISHES WALL ============ -->
+<section class="wishes-section">
+  <div class="wall-inner">
+    <div class="eyebrow">From all of us</div>
+    <h2 style="font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:.6rem;">Wishes from the family</h2>
+    <p style="color:#6b5233; margin-bottom:.5rem; max-width:46ch; margin-left:auto; margin-right:auto;">Add your own message below — it'll join the wall instantly.</p>
+
+    <form class="wall-form" id="wishForm">
+      <input type="text" id="wishFrom" placeholder="Your name" required maxlength="30">
+      <textarea id="wishText" placeholder="Write your birthday wish..." required maxlength="220"></textarea>
+      <button type="submit">Add to the wall</button>
+    </form>
+
+    <div class="wall-grid" id="wallGrid"></div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <h2>Happy Birthday, <span id="momName2">Amma</span> 🎂</h2>
+  <p>Made with love, just for you.</p>
+  <div class="heart">♥</div>
+</footer>
+
+<script>
+(function(){
+  // ---- read the CSS variable so the name updates in one place ----
+  var momName = getComputedStyle(document.documentElement).getPropertyValue('--mom-name').trim().replace(/^"|"$/g,'');
+  document.getElementById('momName').textContent = momName;
+  document.getElementById('momName2').textContent = momName;
+
+  // ---- ambient particles ----
+  var pWrap = document.getElementById('particles');
+  var n = window.innerWidth < 600 ? 16 : 28;
+  for(var i=0;i<n;i++){
+    var p = document.createElement('div');
+    p.className = 'particle';
+    var size = 3 + Math.random()*4;
+    p.style.width = size+'px'; p.style.height = size+'px';
+    p.style.left = Math.random()*100+'vw';
+    p.style.setProperty('--drift', (Math.random()*60-30)+'px');
+    p.style.animationDuration = (8+Math.random()*10)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    pWrap.appendChild(p);
+  }
+
+  // ---- scroll reveal for the letter ----
+  var letter = document.getElementById('letter');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in-view'); });
+  }, {threshold:.25});
+  io.observe(letter);
+
+  // ---- reveal wish cards with slight random rotation ----
+  function styleCard(card){
+    card.style.setProperty('--r', (Math.random()*4-2)+'deg');
+  }
+
+  // ---- candle blow + confetti ----
+  var blowBtn = document.getElementById('blowBtn');
+  var wishMsg = document.getElementById('wishMsg');
+  var flames = document.querySelectorAll('[data-flame]');
+  var smokes = document.querySelectorAll('[data-smoke]');
+
+  blowBtn.addEventListener('click', function(){
+    blowBtn.disabled = true;
+    flames.forEach(function(f, idx){
+      setTimeout(function(){
+        f.classList.add('out');
+        smokes[idx].classList.add('show');
+      }, idx*180);
+    });
+    setTimeout(function(){
+      wishMsg.textContent = 'Your wish has been made ✨';
+      wishMsg.classList.add('show');
+      launchConfetti();
+    }, 700);
+    blowBtn.textContent = 'Wish made 🕯️';
+  });
+
+  // ---- confetti ----
+  var canvas = document.getElementById('confetti');
+  var ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  var colors = ['#c9973e','#e9c888','#fff9ef','#8a3324','#8b6914'];
+  function launchConfetti(){
+    var pieces = [];
+    var count = window.innerWidth < 600 ? 70 : 140;
+    for(var i=0;i<count;i++){
+      pieces.push({
+        x: canvas.width/2 + (Math.random()*260-130),
+        y: canvas.height*0.55,
+        vx: (Math.random()-.5)*9,
+        vy: -(6+Math.random()*8),
+        size: 4+Math.random()*5,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        rot: Math.random()*360,
+        vr: (Math.random()-.5)*12,
+        life: 0
+      });
+    }
+    var gravity = .28;
+    function frame(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      var alive = false;
+      pieces.forEach(function(pc){
+        pc.life++;
+        if(pc.life > 140) return;
+        alive = true;
+        pc.vy += gravity;
+        pc.x += pc.vx; pc.y += pc.vy; pc.rot += pc.vr;
+        ctx.save();
+        ctx.translate(pc.x, pc.y);
+        ctx.rotate(pc.rot*Math.PI/180);
+        ctx.fillStyle = pc.color;
+        ctx.fillRect(-pc.size/2, -pc.size/2, pc.size, pc.size*0.6);
+        ctx.restore();
+      });
+      if(alive) requestAnimationFrame(frame);
+      else ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // ---- wishes wall ----
+  var wallGrid = document.getElementById('wallGrid');
+  var seed = [
+    {from:'Papa', text:'Happy Birthday to the heart of our home. We love you endlessly.'},
+    {from:'Little Sister', text:'You are my favorite person in the whole world, Ma. Happy Birthday!'},
+    {from:'Grandma', text:'So proud of the woman, mother, and daughter you have become.'}
+  ];
+  seed.forEach(addCard);
+
+  document.getElementById('wishForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var from = document.getElementById('wishFrom').value.trim();
+    var text = document.getElementById('wishText').value.trim();
+    if(!from || !text) return;
+    addCard({from:from, text:text}, true);
+    e.target.reset();
+  });
+
+  function addCard(data, prepend){
+    var card = document.createElement('div');
+    card.className = 'wish-card';
+    styleCard(card);
+    var p = document.createElement('p');
+    p.textContent = data.text;
+    var from = document.createElement('div');
+    from.className = 'from';
+    from.textContent = '— ' + data.from;
+    card.appendChild(p);
+    card.appendChild(from);
+    if(prepend && wallGrid.firstChild){
+      wallGrid.insertBefore(card, wallGrid.firstChild);
+    } else {
+      wallGrid.appendChild(card);
+    }
+  }
+})();
+</script>
+</body>
+</html>
